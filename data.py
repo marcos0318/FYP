@@ -7,7 +7,7 @@ class Data:
         with open(path, "r") as fin:
             self.rawDict = json.load(fin)
 
-        self.id2key = [int(key) for key, value in rawDict.items()]
+        self.id2key = [int(key) for key, value in self.rawDict.items()]
         self.key2id = {key: i for i, key in enumerate(self.id2key)}
 
         self.Xs = np.array([value for key, value in rawDict.items()])
