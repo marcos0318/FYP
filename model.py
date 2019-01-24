@@ -16,7 +16,7 @@ class Model:
             decoder_cell = tf.nn.rnn_cell.BasicLSTMCell(embedding_size)
 
             # the encoding steps
-            initial_state = encoder_cell.zero_state(batch_size, dtype=tf.float32)
+            initial_state = encoder_cell.zero_state(flags.batch_size, dtype=tf.float32)
             _, self.encoded_state = tf.nn.dynamic_rnn(encoder_cell, self.encoder_input, dtype=tf.float32, initial_state = initial_state)
 
             # decoding steps
