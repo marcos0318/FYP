@@ -21,12 +21,12 @@ class Data:
 
         indices = np.random.randint(self.Xs.shape[0], size=batch_size)
         encoder_input = self.Xs[indices]
-        print(encoder_input.shape)
+
         decoder_input = np.zeros((encoder_input.shape[0], encoder_input.shape[1]+1, encoder_input.shape[2]))
         decoder_input[:, :-1, :] = encoder_input
         decoder_label = np.zeros((encoder_input.shape[0], encoder_input.shape[1]+1, encoder_input.shape[2]))
         decoder_label[:, 1:, :] = encoder_input
-        print(decoder_input.shape, decoder_label.shape)
+
         return encoder_input, decoder_input, decoder_label
 
 
@@ -39,4 +39,3 @@ class Data:
         
 if __name__ == "__main__":
     data = Data("2016-06-01-2017-06-01all-factors.json")
-    print(data.get_batch())
