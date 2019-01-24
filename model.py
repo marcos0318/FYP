@@ -28,7 +28,7 @@ class Model:
             self.decoder_output = tf.reshape(tf.layers.dense(tf.reshape(self.decoder_output, [-1, flags.latent_size]), flags.input_size), [flags.batch_size, -1, flags.input_size])
 
             self.loss = tf.reduce_sum((self.decoder_label - self.decoder_output) * (self.decoder_label - self.decoder_output))
-            self.optimizer = tf.train.AdamOptimizer.minimize(self.loss)
+            self.optimizer = tf.train.AdamOptimizer().minimize(self.loss)
 
 
 
