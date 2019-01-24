@@ -2,6 +2,7 @@ import tensorflow as tf
 from data import Data
 import argparse
 from tqdm import tqdm 
+import os
 
 class Model:
     def __init__(self, flags):
@@ -41,10 +42,11 @@ if __name__ == "__main__":
     parser.add_argument("-b", "--batch_size", type = int, default = 64)
     parser.add_argument("-e", "--num_epoch", type = int, default = 10)
     parser.add_argument("-u", "--input_size", type = int, default = input_size)
+    parser.add_argument("-g", "--GPU", type = str, default = "0")
     args = parser.parse_args()
     print(args)
 
-
+    os.environ["CUDA_VISIBLE_DEVICES"]=args.GPU
    
     model = Model(args)
 
@@ -59,7 +61,7 @@ if __name__ == "__main__":
 
             process_bar = tqdm(range(num_batches))
             for i in process_bar:
-                encoder_input, decoder_input, decoder_label = data.get_batch()
+                encoder_input, decoder_input, decoder_label = data.get_batch(args.batch_size)
 
                 feed_dict = {
                     model.encoder_input: encoder_input,
