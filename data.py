@@ -12,7 +12,7 @@ class Data:
 
         self.Xs = np.array([value for key, value in self.rawDict.items()])
        
-    def get_batch(batch_size = 3):
+    def get_batch(self, batch_size = 3):
         """
         get_batch will return a tuple. The first is input for encoder and the output of the decoder (with EOS at the end). 
         the second is the input of decoder (with SOS in the front)
