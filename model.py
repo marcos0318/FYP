@@ -6,7 +6,7 @@ from tqdm import tqdm
 class Model:
     def __init__(self, flags):
         with tf.variable_scope("model"):
-            embedding_size = self.embedding_size = flags.embedding_size
+            embedding_size = self.embedding_size = flags.latent_size
 
             self.encoder_input = tf.placeholder(tf.float32, [None, None, None])
             self.decoder_input = tf.placeholder(tf.float32, [None, None, None])
