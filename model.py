@@ -53,9 +53,9 @@ if __name__ == "__main__":
                 encoder_input, decoder_input, decoder_label = data.get_batch()
 
                 feed_dict = {
-                    model.encoder_input = encoder_input,
-                    model.decoder_input = decoder_input,
-                    model.decoder_label = decoder_label
+                    model.encoder_input: encoder_input,
+                    model.decoder_input: decoder_input,
+                    model.decoder_label: decoder_label
                 }
 
                 loss, _ = sess.run([model.loss, model.optimizer], feed_dict = feed_dict)
