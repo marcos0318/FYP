@@ -8,9 +8,9 @@ class Model:
         with tf.variable_scope("model"):
             embedding_size = self.embedding_size = flags.latent_size
 
-            self.encoder_input = tf.placeholder(tf.float32, [None, None, None])
-            self.decoder_input = tf.placeholder(tf.float32, [None, None, None])
-            self.decoder_label = tf.placeholder(tf.float32, [None, None, None])
+            self.encoder_input = tf.placeholder(tf.float32, [flags.batch_size, None, None])
+            self.decoder_input = tf.placeholder(tf.float32, [flags.batch_size, None, None])
+            self.decoder_label = tf.placeholder(tf.float32, [flags.batch_size, None, None])
 
             encoder_cell = tf.nn.rnn_cell.BasicLSTMCell(embedding_size)
             decoder_cell = tf.nn.rnn_cell.BasicLSTMCell(embedding_size)
