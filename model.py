@@ -17,10 +17,13 @@ class Model:
 
             # the encoding steps
             initial_state = encoder_cell.zero_state(flags.batch_size, dtype=tf.float32)
-            _, self.encoded_state = tf.nn.dynamic_rnn(encoder_cell, self.encoder_input, dtype=tf.float32, initial_state = initial_state)
+            with tf.variable_scope("encoder"):
+                _, self.encoded_state = tf.nn.dynamic_rnn(encoder_cell, self.encoder_input, dtype=tf.float32, initial_state = initial_state)
 
             # decoding steps
-            self.decoder_output, _ = tf.nn.dynamic_rnn(decoder_cell, self.decoder_input, dtype=tf.float32, initial_state = self.encoded_state)
+            with tf.variable_scope("decoder"):
+                self.decoder_output, _ = tf.nn.dynamic_rnn(decoder_cell, self.decoder_input, dtype=tf.float32, initial_state = self.encoded_state)
+            
             self.loss = tf.reduce_sum((self.decoder_label - self.decoder_output) * (self.decoder_label - self.decoder_output))
             self.optimizer = tf.train.AdamOptimizer.minimize(self.loss)
 
