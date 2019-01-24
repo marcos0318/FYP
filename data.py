@@ -19,7 +19,7 @@ class Data:
         """
 
 
-        indices = np.random.randint(Xs.shape[0], size=batch_size)
+        indices = np.random.randint(self.Xs.shape[0], size=batch_size)
         encoder_input = self.Xs[indices]
         decoder_input = np.zeros((encoder_input.shape[0], encoder_input.shape[1]+1, encoder_input.shape[2]))
         decoder_input[:, :-1, :] = encoder_input
