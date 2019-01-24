@@ -8,12 +8,12 @@ class Model:
         with tf.variable_scope("model"):
             embedding_size = self.embedding_size = flags.latent_size
 
-            self.encoder_input = tf.placeholder(tf.float32, [flags.batch_size, None, None])
-            self.decoder_input = tf.placeholder(tf.float32, [flags.batch_size, None, None])
-            self.decoder_label = tf.placeholder(tf.float32, [flags.batch_size, None, None])
+            self.encoder_input = tf.placeholder(tf.float32, [flags.batch_size, None, flags.input_size])
+            self.decoder_input = tf.placeholder(tf.float32, [flags.batch_size, None, flags.input_size])
+            self.decoder_label = tf.placeholder(tf.float32, [flags.batch_size, None, flags.input_size])
 
-            encoder_cell = tf.nn.rnn_cell.BasicLSTMCell(embedding_size)
-            decoder_cell = tf.nn.rnn_cell.BasicLSTMCell(embedding_size)
+            encoder_cell = tf.nn.rnn_cell.LSTMCell(embedding_size)
+            decoder_cell = tf.nn.rnn_cell.LSTMCell(embedding_size)
 
             # the encoding steps
             initial_state = encoder_cell.zero_state(flags.batch_size, dtype=tf.float32)
@@ -27,16 +27,19 @@ class Model:
 
 
 if __name__ == "__main__":
+    data = Data("2016-06-01-2017-06-01all-factors.json")
+    input_size = data.Xs.shape[-1]
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--latent_size", type = int, default = 100)
     parser.add_argument("-b", "--batch_size", type = int, default = 64)
     parser.add_argument("-e", "--num_epoch", type = int, default = 10)
+    parser.add_argument("-u", "--input_size", type = int, default = input_size)
     args = parser.parse_args()
     print(args)
 
 
-    data = Data("2016-06-01-2017-06-01all-factors.json")
+   
     model = Model(args)
 
     with tf.Session() as sess:
