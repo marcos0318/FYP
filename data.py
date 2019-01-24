@@ -11,15 +11,17 @@ class Data:
         self.key2id = {key: i for i, key in enumerate(self.id2key)}
 
         self.Xs = np.array([value for key, value in self.rawDict.items()])
-        print(self.id2key)
-        print(self.key2id)
-        print(self.Xs)
-
+       
     def get_batch():
         """
-        get_batch will return a tuple. The first one is the get batch. The second one is the 
+        get_batch will return a tuple. The first is input for encoder and the output of the decoder (with EOS at the end). 
+        the second is the input of decoder (with SOS in the front)
         """
-        pass
+
+        indices = np.random.randint(Xs.shape[0], size=batch_size)
+        return self.Xs[indices]
+
+        
 
 
         
