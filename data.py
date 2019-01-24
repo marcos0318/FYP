@@ -26,7 +26,7 @@ class Data:
         decoder_input[:, :-1, :] = encoder_input
         decoder_label = np.zeros((encoder_input.shape[0], encoder_input.shape[1]+1, encoder_input.shape[2]))
         decoder_label[:, 1:, :] = encoder_input
-
+        print(decoder_input.shape, decoder_label.shape)
         return encoder_input, decoder_input, decoder_label
 
 
