@@ -42,7 +42,7 @@ if __name__ == "__main__":
     parser.add_argument("-b", "--batch_size", type = int, default = 64)
     parser.add_argument("-e", "--num_epoch", type = int, default = 1)
     parser.add_argument("-u", "--input_size", type = int, default = input_size)
-    parser.add_argument("-g", "--GPU", type = str, default = "0,1")
+    parser.add_argument("-g", "--GPU", type = str, default = "0,2")
     args = parser.parse_args()
     print(args)
 
