@@ -4,6 +4,7 @@ import argparse
 from tqdm import tqdm 
 import os
 import numpy as np
+import json
 
 class Model:
     def __init__(self, flags):
@@ -37,7 +38,10 @@ class Model:
 
 
 if __name__ == "__main__":
-    data = Data("2016-06-01-2017-06-01all-factors.json")
+
+    file_name = "2016-06-01-2017-06-01all-factors.json"
+
+    data = Data(file_name)
     print(data.Xs.shape)
     input_size = data.Xs.shape[-1]
 
@@ -87,6 +91,11 @@ if __name__ == "__main__":
         encoded_state = np.hstack((c, h))
 
         print(encoded_state.shape)
+
+        features = { data.id2key[i]: encoded_state[i, :] for i in range(encoded_state.shape[0])}
+
+        with open("encoded_" + file_name, "w") as fout:
+            json.dump(features, fout)
 
 
 
