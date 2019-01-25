@@ -80,7 +80,7 @@ if __name__ == "__main__":
             model.encoder_input: encoder_input
         }
 
-        h, c, _ = sess.run(model.encoded_state, feed_dict = feed_dict)
+        c, h= sess.run(model.encoded_state, feed_dict = feed_dict)
 
 
         print(h.shape)
