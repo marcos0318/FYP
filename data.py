@@ -12,7 +12,7 @@ class Data:
 
         self.Xs = np.array([value for key, value in self.rawDict.items()])
        
-    def get_batch(self, batch_size = 3):
+    def get_batch(self, batch_size):
 
         """
         get_batch will return a tuple. The first is input for encoder and the output of the decoder (with EOS at the end). 
@@ -21,6 +21,22 @@ class Data:
 
         indices = np.random.randint(self.Xs.shape[0], size=batch_size)
         encoder_input = self.Xs[indices]
+
+        decoder_input = np.zeros((encoder_input.shape[0], encoder_input.shape[1]+1, encoder_input.shape[2]))
+        decoder_input[:, :-1, :] = encoder_input
+        decoder_label = np.zeros((encoder_input.shape[0], encoder_input.shape[1]+1, encoder_input.shape[2]))
+        decoder_label[:, 1:, :] = encoder_input
+
+        return encoder_input, decoder_input, decoder_label
+
+
+    def get_all(self):
+
+        """
+        get all as a batch
+        """
+        
+        encoder_input = self.Xs
 
         decoder_input = np.zeros((encoder_input.shape[0], encoder_input.shape[1]+1, encoder_input.shape[2]))
         decoder_input[:, :-1, :] = encoder_input

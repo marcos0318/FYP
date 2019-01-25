@@ -40,9 +40,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--latent_size", type = int, default = 100)
     parser.add_argument("-b", "--batch_size", type = int, default = 64)
-    parser.add_argument("-e", "--num_epoch", type = int, default = 10)
+    parser.add_argument("-e", "--num_epoch", type = int, default = 1)
     parser.add_argument("-u", "--input_size", type = int, default = input_size)
-    parser.add_argument("-g", "--GPU", type = str, default = "0")
+    parser.add_argument("-g", "--GPU", type = str, default = "0,1")
     args = parser.parse_args()
     print(args)
 
@@ -71,6 +71,17 @@ if __name__ == "__main__":
 
                 loss, _ = sess.run([model.loss, model.optimizer], feed_dict = feed_dict)
                 process_bar.set_description("Loss: %0.2f" % loss)
+
+        encoder_input, decoder_input, decoder_label = data.get_all()
+
+        feed_dict = {
+            model.encoder_input: encoder_input
+        }
+
+        all_encoded = sess.run(self.encoded_state, feed_dict = feed_dict)
+
+        print(all_encoded.shape)
+
 
 
 
