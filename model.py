@@ -48,7 +48,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--latent_size", type = int, default = 100)
     parser.add_argument("-b", "--batch_size", type = int, default = 64)
-    parser.add_argument("-e", "--num_epoch", type = int, default = 1)
+    parser.add_argument("-e", "--num_epoch", type = int, default = 40)
     parser.add_argument("-u", "--input_size", type = int, default = input_size)
     parser.add_argument("-g", "--GPU", type = str, default = "0,2")
     args = parser.parse_args()
