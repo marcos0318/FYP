@@ -3,6 +3,7 @@ from data import Data
 import argparse
 from tqdm import tqdm 
 import os
+import numpy as np
 
 class Model:
     def __init__(self, flags):
