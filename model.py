@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
         print(encoded_state.shape)
 
-        features = { data.id2key[i]: list(encoded_state[i, :]) for i in range(encoded_state.shape[0])}
+        features = { data.id2key[i]: encoded_state[i, :].tolist() for i in range(encoded_state.shape[0])}
 
         with open("encoded_" + file_name, "w") as fout:
             json.dump(features, fout)
