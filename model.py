@@ -78,7 +78,7 @@ if __name__ == "__main__":
             model.encoder_input: encoder_input
         }
 
-        all_encoded = sess.run(self.encoded_state, feed_dict = feed_dict)
+        all_encoded = sess.run(model.encoded_state, feed_dict = feed_dict)
 
         print(all_encoded.shape)
 
