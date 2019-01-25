@@ -17,7 +17,9 @@ class Model:
             decoder_cell = tf.nn.rnn_cell.LSTMCell(embedding_size)
 
             # the encoding steps
-            initial_state = encoder_cell.zero_state(flags.batch_size, dtype=tf.float32)
+
+            batch_size = tf.shape(self.encoder_input)[0]
+            initial_state = encoder_cell.zero_state(batch_size, dtype=tf.float32)
             with tf.variable_scope("encoder"):
                 _, self.encoded_state = tf.nn.dynamic_rnn(encoder_cell, self.encoder_input, dtype=tf.float32, initial_state = initial_state)
 
@@ -26,7 +28,7 @@ class Model:
                 self.decoder_output, _ = tf.nn.dynamic_rnn(decoder_cell, self.decoder_input, dtype=tf.float32, initial_state = self.encoded_state)
             
 
-            self.decoder_output = tf.reshape(tf.layers.dense(tf.reshape(self.decoder_output, [-1, flags.latent_size]), flags.input_size), [flags.batch_size, -1, flags.input_size])
+            self.decoder_output = tf.reshape(tf.layers.dense(tf.reshape(self.decoder_output, [-1, flags.latent_size]), flags.input_size), [batch_size, -1, flags.input_size])
 
             self.loss = tf.reduce_sum((self.decoder_label - self.decoder_output) * (self.decoder_label - self.decoder_output))
             self.optimizer = tf.train.AdamOptimizer().minimize(self.loss)
