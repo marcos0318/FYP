@@ -83,9 +83,9 @@ if __name__ == "__main__":
 
         c, h= sess.run(model.encoded_state, feed_dict = feed_dict)
 
+        encoded_state = np.hstack((c, h))
 
-        print(h.shape)
-        print(c.shape)
+        print(encoded_state.shape)
 
 
 
