@@ -37,6 +37,7 @@ class Model:
 
 if __name__ == "__main__":
     data = Data("2016-06-01-2017-06-01all-factors.json")
+    print(data.Xs.shape)
     input_size = data.Xs.shape[-1]
 
     parser = argparse.ArgumentParser()
