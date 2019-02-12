@@ -1,5 +1,7 @@
 import rqdatac as rq
 import pandas as pd
+import numpy as np
+from scipy.stats.stats import pearsonr
 
 # initializing rqdatac
 rq.init()
@@ -11,3 +13,10 @@ factor_return = rq.get_factor_return(start_date, end_date, "all", universe="whol
 
 factor_return.to_csv("factor_return.csv")
 factor_return.to_json(("factor_return.json"))
+
+# calculate the corrlation here
+
+result = np.zeros((10, 10))
+
+for col in factor_return:
+    print(col) 
