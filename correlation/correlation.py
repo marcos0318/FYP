@@ -18,5 +18,8 @@ factor_return.to_json(("factor_return.json"))
 
 result = np.zeros((10, 10))
 
-for col in factor_return:
-    print(col) 
+col1_index = 0
+for col1 in factor_return:
+    for col2 in factor_return:
+
+
