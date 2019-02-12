@@ -49,8 +49,8 @@
         <script>
            var margin = {top: 125, right: 100, bottom: 100, left: 275};
            
-           var width = 900 - margin.left - margin.right,
-               height = 500 - margin.top - margin.bottom;
+           var width = 1200 - margin.left - margin.right,
+               height = 1200 / 900 * 500 - margin.top - margin.bottom;
                 
            var svg = d3.select("body").append("svg")
              .attr("width", width + margin.left + margin.right)
@@ -220,7 +220,7 @@
                     
               var legend1 = svg.append("g")
                 .attr("class", "legend")
-                .attr("transform", "translate(" + [width /2, height + rectHeight] + ")")
+                .attr("transform", "translate(" + [width /2, height + rectHeight/ 2] + ")")
               
               var legendLinearPos = d3.legendColor()
                 .shapeWidth(rectWidth)
@@ -234,7 +234,7 @@
 
               var legend2 = svg.append("g")
                 .attr("class", "legend")
-                .attr("transform", "translate(" + [0, height + rectHeight] + ")")
+                .attr("transform", "translate(" + [0, height + rectHeight /2 ] + ")")
 
               var legendLinearNeg = d3.legendColor()
                 .shapeWidth(rectWidth)
