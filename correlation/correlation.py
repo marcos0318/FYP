@@ -18,8 +18,19 @@ factor_return.to_json(("factor_return.json"))
 
 result = np.zeros((10, 10))
 
-col1_index = 0
-for col1 in factor_return:
-    for col2 in factor_return:
+cols = []
 
+for i, col1 in enumerate(factor_return):
+    print(col1)
+    cols.append(col1)
+    for j, col2 in enumerate(factor_return):
+        r, p = pearsonr(factor_return[col1], factor_return[col2])
+        result[i, j] = r
+
+
+print(result)
+
+corr_df = pd.DataFrame(data=result, index=cols, columns=cols)
+
+corr_df.to_csv("factor_return_correlation.csv")
 
