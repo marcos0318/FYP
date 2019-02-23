@@ -11,6 +11,8 @@ from model import Model
 file_name = "2016-06-01-2017-06-01all-factors.json"
 
 
+data = Data(file_name)
+
 print(data.Xs.shape)
 input_size = data.Xs.shape[-1]
 
@@ -24,7 +26,6 @@ parser.add_argument("-g", "--GPU", type = str, default = "0")
 args = parser.parse_args()
 print(args)
 
-data = Data(file_name)
 m = Model(args)
 
 sess = tf.Session()
