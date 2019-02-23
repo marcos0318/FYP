@@ -41,12 +41,12 @@ sector_sess = tf.Session(graph=sector_graph)
 
 
 with factor_sess.as_default():
-    with model_graph.as_default():
+    with factor_graph.as_default():
         tf.global_variables_initializer().run()
         factor_model.saver.restore(factor_sess, "./saved_models/lstm_autoencoder_factor.ckpt")
 
 with sector_sess.as_default():
-    with adv_graph.as_default():
+    with sector_graph.as_default():
         tf.global_variables_initializer().run()
         sector_model.saver.restore(sector_sess, "./saved_models/lstm_autoencoder_sector.ckpt")
 
