@@ -58,7 +58,7 @@ def lstm_factor_encode(data):
         factor_model.encoder_input: data
     }
 
-    c, h= sess.run(factor_model.encoded_state, feed_dict = feed_dict)
+    c, h= factor_sess.run(factor_model.encoded_state, feed_dict = feed_dict)
 
     encoded_state = np.hstack((c, h))
     return encoded_state
@@ -68,7 +68,7 @@ def lstm_sector_encode(data):
         sector_model.encoder_input: data
     }
 
-    c, h= sess.run(sector_model.encoded_state, feed_dict = feed_dict)
+    c, h= sector_sess.run(sector_model.encoded_state, feed_dict = feed_dict)
 
     encoded_state = np.hstack((c, h))
     return encoded_state
