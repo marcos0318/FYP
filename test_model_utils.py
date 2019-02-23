@@ -6,7 +6,7 @@ import numpy as np
 import json
 from model import Model
 from model_utils import lstm_factor_encode, lstm_sector_encode, lstm_tsne_factor_encode, lstm_tsne_sector_encode
-from time 
+import time 
 
 "factor input 10"
 "sector input 29"
