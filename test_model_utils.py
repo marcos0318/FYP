@@ -5,7 +5,8 @@ import os
 import numpy as np
 import json
 from model import Model
-from model_utils import lstm_factor_encode, lstm_sector_encode
+from model_utils import lstm_factor_encode, lstm_sector_encode, lstm_tsne_factor_encode, lstm_tsne_sector_encode
+from time 
 
 "factor input 10"
 "sector input 29"
@@ -21,13 +22,31 @@ sector_data = Data(file_name)
 
 
 # Test factor data encoder
+encoder_input, decoder_input, decoder_label = factor_data.get_all()
+s = time.time()
+print("Before:", encoder_input.shape)
+encoded_state = lstm_factor_encode(encoder_input)
+print("After:", encoded_state.shape, time.time()-s)
 
 encoder_input, decoder_input, decoder_label = factor_data.get_all()
-encoded_state = lstm_factor_encode(encoder_input)
-print(encoded_state.shape)
-
+s = time.time()
+print("Before:", encoder_input.shape)
+encoded_state = lstm_tsne_factor_encode(encoder_input)
+print("After:", encoded_state.shape, time.time()-s)
 
 # Test sector data encoder
+
+
 encoder_input, decoder_input, decoder_label = sector_data.get_all()
+print("Before:", encoder_input.shape)
+s = time.time()
 encoded_state = lstm_sector_encode(encoder_input)
-print(encoded_state.shape)
+print("After:", encoded_state.shape, time.time()-s)
+
+
+encoder_input, decoder_input, decoder_label = sector_data.get_all()
+print("Before:", encoder_input.shape)
+s = time.time()
+encoded_state = lstm_tsne_sector_encode(encoder_input)
+print("After:", encoded_state.shape, time.time()-s)
+

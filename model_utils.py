@@ -6,7 +6,7 @@ import os
 import numpy as np
 import json
 from model import Model
-
+from sklearn.manifold import TSNE
 
 
 "factor input 10"
@@ -74,3 +74,12 @@ def lstm_sector_encode(data):
     return encoded_state
 
 
+def lstm_tsne_factor_encode(data):
+    encoded_data = lstm_factor_encode(data)
+    encoded_data = TSNE(n_components=2).fit_transform(encoded_data)
+    return encoded_data
+
+def lstm_tsne_sector_encode(data):
+    encoded_data = lstm_sector_encode(data)
+    encoded_data = TSNE(n_components=2).fit_transform(encoded_data)
+    return encoded_data
