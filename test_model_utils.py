@@ -5,7 +5,7 @@ import os
 import numpy as np
 import json
 from model import Model
-from model_utils import lstm_factor_encode. lstm_sector_encode
+from model_utils import lstm_factor_encode, lstm_sector_encode
 
 "factor input 10"
 "sector input 29"
