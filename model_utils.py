@@ -55,7 +55,7 @@ with sector_sess.as_default():
 
 def lstm_factor_encode(data):
     feed_dict = {
-        factor_model.encoder_input: encoder_input
+        factor_model.encoder_input: data
     }
 
     c, h= sess.run(factor_model.encoded_state, feed_dict = feed_dict)
@@ -65,7 +65,7 @@ def lstm_factor_encode(data):
 
 def lstm_sector_encode(data):
     feed_dict = {
-        sector_model.encoder_input: encoder_input
+        sector_model.encoder_input: data
     }
 
     c, h= sess.run(sector_model.encoded_state, feed_dict = feed_dict)
