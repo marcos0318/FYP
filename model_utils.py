@@ -8,12 +8,12 @@ import json
 from model import Model
 
 
-file_name = "2016-06-01-2017-06-01all-sectors.json"
+file_name = "2016-06-01-2017-06-01all-factors.json"
 
 
 
 "factor input 10"
-"sector input "
+"sector input 29"
 
 data = Data(file_name)
 
