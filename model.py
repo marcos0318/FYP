@@ -35,6 +35,8 @@ class Model:
             self.loss = tf.reduce_sum((self.decoder_label - self.decoder_output) * (self.decoder_label - self.decoder_output))
             self.optimizer = tf.train.AdamOptimizer().minimize(self.loss)
 
+            self.saver = tf.train.Saver()
+
 
 
 if __name__ == "__main__":
@@ -50,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("-b", "--batch_size", type = int, default = 64)
     parser.add_argument("-e", "--num_epoch", type = int, default = 40)
     parser.add_argument("-u", "--input_size", type = int, default = input_size)
-    parser.add_argument("-g", "--GPU", type = str, default = "0,2")
+    parser.add_argument("-g", "--GPU", type = str, default = "0")
     args = parser.parse_args()
     print(args)
 
@@ -80,6 +82,8 @@ if __name__ == "__main__":
                 loss, _ = sess.run([model.loss, model.optimizer], feed_dict = feed_dict)
                 process_bar.set_description("Loss: %0.2f" % loss)
 
+            model.saver.save(sess, "lstm_autoencoder.ckpt")
+
         encoder_input, decoder_input, decoder_label = data.get_all()
 
         feed_dict = {
@@ -94,8 +98,8 @@ if __name__ == "__main__":
 
         features = { data.id2key[i]: encoded_state[i, :].tolist() for i in range(encoded_state.shape[0])}
 
-        with open("encoded_" + file_name, "w") as fout:
-            json.dump(features, fout)
+        # with open("encoded_" + file_name, "w") as fout:
+        #     json.dump(features, fout)
 
 
 
