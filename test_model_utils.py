@@ -23,6 +23,11 @@ data = Data(file_name)
 
 encoder_input, decoder_input, decoder_label = data.get_all()
 
+
+
+
+
+
 encoded_state = lstm_encode(encoder_input)
 
 

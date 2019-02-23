@@ -48,10 +48,3 @@ def lstm_encode(data):
     return encoded_state
 
 
-
-encoder_input, decoder_input, decoder_label = data.get_all()
-
-encoded_state = lstm_encode(encoder_input)
-
-
-print(encoded_state.shape)
