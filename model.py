@@ -82,7 +82,7 @@ if __name__ == "__main__":
                 loss, _ = sess.run([model.loss, model.optimizer], feed_dict = feed_dict)
                 process_bar.set_description("Loss: %0.2f" % loss)
 
-            model.saver.save(sess, "lstm_autoencoder.ckpt")
+            model.saver.save(sess, "./saved_models/lstm_autoencoder.ckpt")
 
         encoder_input, decoder_input, decoder_label = data.get_all()
 
