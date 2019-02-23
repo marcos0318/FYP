@@ -7,6 +7,14 @@ import numpy as np
 import json
 from model import Model
 
+
+file_name = "2016-06-01-2017-06-01all-factors.json"
+
+data = Data(file_name)
+print(data.Xs.shape)
+input_size = data.Xs.shape[-1]
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument("-l", "--latent_size", type = int, default = 100)
 parser.add_argument("-b", "--batch_size", type = int, default = 64)
@@ -16,7 +24,7 @@ parser.add_argument("-g", "--GPU", type = str, default = "0")
 args = parser.parse_args()
 print(args)
 
-
+data = Data()
 m = Model(args)
 
 sess = tf.Session()
