@@ -11,7 +11,7 @@ class Data:
         self.key2id = {key: i for i, key in enumerate(self.id2key)}
 
         self.Xs = np.array([value for key, value in self.rawDict.items()])
-       
+        print("------------X shape:", self.Xs.shape)
     def get_batch(self, batch_size):
 
         """
