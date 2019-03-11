@@ -32,8 +32,15 @@ var margin = {
     bottom: 10,
     left: 10
   },
-  width = 960 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+  width = 500 - margin.left - margin.right,
+  height = 400 - margin.top - margin.bottom,
+
+  plot_dx = width,
+  plot_dy = height;
+
+  var x = d3.scaleLinear().range([margin.left, width]),
+      y = d3.scaleLinear().range([height, margin.top]);
+
 
 var svg = d3.select("body").append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -52,102 +59,204 @@ var gBrushes = svg.append('g')
 
 
 
+var formatIncome = d3.format(".1"),
+    formatHsGrad = d3.format(".1"),
+    formatHsGradAxis = d3.format(".1");
+
+
+d3.csv("MDSencoded_2016-06-01-2017-06-01all-factors.json.csv", d => {
+
+  var n = d.length;
+  var d_extent_x = d3.extent(d, d => +d[" x"]),
+      d_extent_y = d3.extent(d, d => +d[" y "]);
+
+  x.domain(d_extent_x);
+  y.domain(d_extent_y);
+
+  var axis_x = d3.axisBottom(x)
+                 .tickFormat(formatIncome),
+      axis_y = d3.axisLeft(y)
+                 .tickFormat(formatHsGradAxis);
+
+  svg.append("g")
+     .attr("id", "axis_x")
+     .attr("transform", "translate(0," + (plot_dy + margin.bottom / 2) + ")")
+     .call(axis_x);
+
+  svg.append("g")
+     .attr("id", "axis_y")
+     .attr("transform", "translate(" + (margin.left / 2) + ", 0)")
+     .call(axis_y);
+
+  d3.select("#axis_x")
+    .append("text")
+    .attr("transform", "translate(360, -10)")
+    
+
+  d3.select("#axis_y")
+    .append("text")
+    .attr("transform", "rotate(-90) translate(-20, 15)")
+    
+
+
+  var tooltip = d3.select("body")
+  .append("div")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden")
+  .text("a simple tooltip");
+
+  var circles = svg.append("g")
+                   .selectAll("circle")
+                   .data(d)
+                   .enter()
+                   .append("circle")
+                   .attr("r", 1)
+                   .attr("stock_id", (d)=> d["id"])
+                   .attr("cx", (d) => x(+d[" x"]))
+                   .attr("cy", (d) => y(+d[" y "]))
+                   .attr("class", "non_brushed")
+                   .on("mouseover", function(evt){
+                    tooltip.text(evt["id"])
+                    tooltip.style("visibility", "visible");
+                    // tooltip.text((d) => d["id"])
+                     })
+                   .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+                   .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
 
 
-// We also keep the actual d3-brush functions and their IDs in a list:
-var brushes = [];
 
-/* CREATE NEW BRUSH
- *
- * This creates a new brush. A brush is both a function (in our array) and a set of predefined DOM elements
- * Brushes also have selections. While the selection are empty (i.e. a suer hasn't yet dragged)
- * the brushes are invisible. We will add an initial brush when this viz starts. (see end of file)
- * Now imagine the user clicked, moved the mouse, and let go. They just gave a selection to the initial brush.
- * We now want to create a new brush.
- * However, imagine the user had simply dragged an existing brush--in that case we would not want to create a new one.
- * We will use the selection of a brush in brushend() to differentiate these cases.
- */
-function newBrush() {
-  var brush = d3.brush()
-    .on("start", brushstart)
-    .on("brush", brushed)
-    .on("end", brushend);
 
-  brushes.push({id: brushes.length, brush: brush});
+  // We also keep the actual d3-brush functions and their IDs in a list:
+  var brushes = [];
 
-  function brushstart() {
-    // your stuff here
-  };
+  var total_selected_id = [];
 
-  function brushed() {
-    // your stuff here
+  /* CREATE NEW BRUSH
+   *
+   * This creates a new brush. A brush is both a function (in our array) and a set of predefined DOM elements
+   * Brushes also have selections. While the selection are empty (i.e. a suer hasn't yet dragged)
+   * the brushes are invisible. We will add an initial brush when this viz starts. (see end of file)
+   * Now imagine the user clicked, moved the mouse, and let go. They just gave a selection to the initial brush.
+   * We now want to create a new brush.
+   * However, imagine the user had simply dragged an existing brush--in that case we would not want to create a new one.
+   * We will use the selection of a brush in brushend() to differentiate these cases.
+   */
+  function isBrushed(brush_coords, cx, cy) {
+       var x0 = brush_coords[0][0],
+           x1 = brush_coords[1][0],
+           y0 = brush_coords[0][1],
+           y1 = brush_coords[1][1];
+      return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
   }
 
-  function brushend() {
+  function newBrush() {
+    var brush = d3.brush()
+      .on("start", brushstart)
+      .on("brush", brushed)
+      .on("end", brushend);
 
-    // 
+    brushes.push({id: brushes.length, brush: brush});
 
+    function brushstart() {
+      // your stuff here
 
-    // Figure out if our latest brush has a selection
-    var lastBrushID = brushes[brushes.length - 1].id;
-    var lastBrush = document.getElementById('brush-' + lastBrushID);
-    var selection = d3.brushSelection(lastBrush);
+    };
 
-    // If it does, that means we need another one
-    if (selection && selection[0] !== selection[1]) {
-      newBrush();
+    function brushed() {
+      // your stuff here
     }
 
-    // Always draw brushes
-    drawBrushes();
+    function brushend() {
+
+      // 
+      // console.log(d3.brushSelection(this))
+      // console.log(circles)
+
+      if (d3.event.selection == null) return
+
+
+      var brush_coords = d3.brushSelection(this);
+      var adjusted_d = d.map( _d => {
+        return {"x_cord": x(_d[" x"]), "y_cord": y(_d[" y "]), "id": _d["id"]}
+      });
+
+      var selected_stocks = adjusted_d.filter( _d => 
+        isBrushed(brush_coords, _d["x_cord"], _d["y_cord"])
+      ).map( _d => _d["id"])
+
+      total_selected_id.push(selected_stocks)
+      console.log(total_selected_id)        
+
+
+
+      // Figure out if our latest brush has a selection
+      var lastBrushID = brushes[brushes.length - 1].id;
+      var lastBrush = document.getElementById('brush-' + lastBrushID);
+      var selection = d3.brushSelection(lastBrush);
+
+      // If it does, that means we need another one
+      if (selection && selection[0] !== selection[1]) {
+        newBrush();
+      }
+
+      // Always draw brushes
+      drawBrushes();
+    }
   }
-}
 
-function drawBrushes() {
+  function drawBrushes() {
 
-  var brushSelection = gBrushes
-    .selectAll('.brush')
-    .data(brushes, function (d){return d.id});
+    var brushSelection = gBrushes
+      .selectAll('.brush')
+      .data(brushes, function (d){return d.id})
 
-    // Set up new brushes
-  brushSelection.enter()
-    .insert("g", '.brush')
-    .attr('class', 'brush')
-    .attr('id', function(brush){ return "brush-" + brush.id; })
-    .each(function(brushObject) {
-      //call the brush
-      brushObject.brush(d3.select(this));
-    });
 
-    /* REMOVE POINTER EVENTS ON BRUSH OVERLAYS
-     *
-     * This part is abbit tricky and requires knowledge of how brushes are implemented.
-     * They register pointer events on a .overlay rectangle within them.
-     * For existing brushes, make sure we disable their pointer events on their overlay.
-     * This frees the overlay for the most current (as of yet with an empty selection) brush to listen for click and drag events
-     * The moving and resizing is done with other parts of the brush, so that will still work.
-     */
-  brushSelection
-    .each(function (brushObject){
-      d3.select(this)
-        .attr('class', 'brush')
-        .selectAll('.overlay')
-        .style('pointer-events', function() {
-          var brush = brushObject.brush;
-          if (brushObject.id === brushes.length-1 && brush !== undefined) {
-            return 'all';
-          } else {
-            return 'none';
-          }
-        });
-    })
+      // Set up new brushes
+    brushSelection.enter()
+      .insert("g", '.brush')
+      .attr('class', 'brush')
+      .attr('id', function(brush){ return "brush-" + brush.id; })
+      .each(function(brushObject) {
+        //call the brush
+        console.log(brushObject)
+        brushObject.brush(d3.select(this));
+      });
 
-  brushSelection.exit()
-    .remove();
-}
+      /* REMOVE POINTER EVENTS ON BRUSH OVERLAYS
+       *
+       * This part is abbit tricky and requires knowledge of how brushes are implemented.
+       * They register pointer events on a .overlay rectangle within them.
+       * For existing brushes, make sure we disable their pointer events on their overlay.
+       * This frees the overlay for the most current (as of yet with an empty selection) brush to listen for click and drag events
+       * The moving and resizing is done with other parts of the brush, so that will still work.
+       */
+  
 
-newBrush();
-drawBrushes();
 
+    brushSelection
+      .each(function (brushObject){
+        d3.select(this)
+          .attr('class', 'brush')
+          .selectAll('.overlay')
+          .style('pointer-events', function() {
+            var brush = brushObject.brush;
+            if (brushObject.id === brushes.length-1 && brush !== undefined) {
+              return 'all';
+            } else {
+              return 'none';
+            }
+          });
+      })
+
+    brushSelection.exit()
+      .remove();
+  }
+
+  newBrush();
+  drawBrushes();
+
+
+});
 </script>

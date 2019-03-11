@@ -83,3 +83,4 @@ def lstm_tsne_sector_encode(data):
     encoded_data = lstm_sector_encode(data)
     encoded_data = TSNE(n_components=2).fit_transform(encoded_data)
     return encoded_data
+
