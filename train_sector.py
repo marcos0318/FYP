@@ -9,7 +9,7 @@ import json
 
 
 
-file_name = "2016-06-01-2017-06-01all-sectors.json"
+file_name = "allSectorDataWithoutCutting.json"
 
 data = Data(file_name)
 print(data.Xs.shape)
@@ -50,4 +50,4 @@ with tf.Session() as sess:
             loss, _ = sess.run([model.loss, model.optimizer], feed_dict = feed_dict)
             process_bar.set_description("Loss: %0.2f" % loss)
 
-        model.saver.save(sess, "./saved_models/lstm_autoencoder_sector.ckpt")
+        model.saver.save(sess, "./newModels/lstm_autoencoder_sector.ckpt")

@@ -9,7 +9,7 @@ import json
 
 
 
-file_name = "2016-06-01-2017-06-01all-factors.json"
+file_name = "allFactorDataWithoutCutting.json"
 
 data = Data(file_name)
 print(data.Xs.shape)
@@ -50,20 +50,6 @@ with tf.Session() as sess:
             loss, _ = sess.run([model.loss, model.optimizer], feed_dict = feed_dict)
             process_bar.set_description("Loss: %0.2f" % loss)
 
-        model.saver.save(sess, "./saved_models/lstm_autoencoder_factor.ckpt")
+        model.saver.save(sess, "./newModels/lstm_autoencoder_factor.ckpt")
 
-    # encoder_input, decoder_input, decoder_label = data.get_all()
-
-    # feed_dict = {
-    #     model.encoder_input: encoder_input
-    # }
-
-    # c, h= sess.run(model.encoded_state, feed_dict = feed_dict)
-
-    # encoded_state = np.hstack((c, h))
-
-    # print(encoded_state.shape)
-
-    # features = { data.id2key[i]: encoded_state[i, :].tolist() for i in range(encoded_state.shape[0])}
-
-    # with open("encoded_" + file_name, "w") as fout:
+   
